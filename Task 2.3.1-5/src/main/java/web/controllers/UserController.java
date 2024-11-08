@@ -4,13 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 import web.models.User;
 import web.services.UserService;
+import javax.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 @Controller
 @RequestMapping("/users")
+
 public class UserController {
+
     private final UserService userService;
 
     @Autowired
@@ -36,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("user") User user,
+    public String create(@ModelAttribute("user") @Valid User user,
                          BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "new";
@@ -51,7 +60,7 @@ public class UserController {
         return "edit";
     }
 
-    @PutMapping("/edit")
+    @PostMapping("/edit")
     public String update(@ModelAttribute("user") User user, BindingResult bindingResult,
                          @RequestParam(value = "id") int id) {
         if (bindingResult.hasErrors())
@@ -61,9 +70,10 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public String delete(@RequestParam(value = "id") int id) {
         userService.delete(id);
         return "redirect:/users";
     }
+
 }

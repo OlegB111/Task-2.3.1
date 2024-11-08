@@ -13,16 +13,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    // @Column(name = "name")
+    @NotEmpty(message = "Should be name")
     private String name;
 
+    // @Column(name = "age")
     @Min(value = 0, message = "Age should be greater than 0")
-    @Column(name = "age")
     private int age;
 
-    @NotEmpty(message = "Where email?")
+    // @Column(name = "email")
     @Email(message = "It's not email")
-    @Column(name = "email")
     private String email;
 
     public User() {
@@ -65,5 +65,15 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
